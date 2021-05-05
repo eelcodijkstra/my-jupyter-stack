@@ -6,11 +6,13 @@ FROM jupyter/base-notebook
 # change file permissions, etc. etc.
 USER root
 
-
 RUN apt-get update && \
     apt-get -y install curl
 
 RUN curl --version
+
+# RUN apt-get -y install nodejs npm
+# RUN node --version
 
 # Install elm
 RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz && \
@@ -24,3 +26,8 @@ USER $NB_USER
 
 RUN pip install elm_kernel && \
     python -m elm_kernel.install
+
+RUN curl -L -O elmreplkernel.zip https://github.com/eelcodijkstra/elmreplkernel/archive/refs/heads/master.zip && \
+    gunzip elmreplkernel.zip && \
+    python elmreplkernel/setup.py install && \
+    python -m elmreplkernel.install
