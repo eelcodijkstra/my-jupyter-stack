@@ -7,7 +7,7 @@ FROM jupyter/base-notebook
 USER root
 
 RUN apt-get update && \
-    apt-get -y install curl
+    apt-get -y install curl zip
 
 RUN curl --version
 
@@ -27,7 +27,14 @@ USER $NB_USER
 RUN pip install elm_kernel && \
     python -m elm_kernel.install
 
+RUN zip --version 
+
 RUN curl -L -o elmreplkernel.zip https://github.com/eelcodijkstra/elmreplkernel/archive/refs/heads/master.zip && \
-    gunzip elmreplkernel.zip && \
-    python elmreplkernel/setup.py install && \
-    python -m elmreplkernel.install
+    unzip elmreplkernel.zip
+
+WORKDIR elmreplkernel-master
+
+RUN python setup.py install && \
+    python -m elmrepl_kernel.install
+
+WORKDIR $HOME
