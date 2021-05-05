@@ -9,11 +9,6 @@ USER root
 RUN apt-get update && \
     apt-get -y install curl zip
 
-RUN curl --version
-
-# RUN apt-get -y install nodejs npm
-# RUN node --version
-
 # Install elm
 RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz && \
     gunzip elm.gz && \
@@ -27,14 +22,15 @@ USER $NB_USER
 RUN pip install elm_kernel && \
     python -m elm_kernel.install
 
-RUN zip --version 
-
 RUN curl -L -o elmreplkernel.zip https://github.com/eelcodijkstra/elmreplkernel/archive/refs/heads/master.zip && \
     unzip elmreplkernel.zip
 
 WORKDIR elmreplkernel-master
 
 RUN python setup.py install && \
-    python -m elmrepl_kernel.install
+    python -m elmrepl_kernel.install   
 
 WORKDIR $HOME
+
+# clean up elmrepl-kernel install files
+RUN rm -R elmreplkernel-master elmreplkernel.zip
