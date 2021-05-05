@@ -27,7 +27,7 @@ USER $NB_USER
 RUN pip install elm_kernel && \
     python -m elm_kernel.install
 
-RUN curl -L -O elmreplkernel.zip https://github.com/eelcodijkstra/elmreplkernel/archive/refs/heads/master.zip && \
+RUN curl -L -o elmreplkernel.zip https://github.com/eelcodijkstra/elmreplkernel/archive/refs/heads/master.zip && \
     gunzip elmreplkernel.zip && \
     python elmreplkernel/setup.py install && \
     python -m elmreplkernel.install
