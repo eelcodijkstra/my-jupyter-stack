@@ -9,6 +9,8 @@ USER root
 RUN apt-get update && \
     apt-get -y install curl zip
 
+WORKDIR /tmp/elm    
+
 # Install elm
 RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz && \
     gunzip elm.gz && \
@@ -17,20 +19,23 @@ RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/b
 
 # If you do switch to root, always be sure to add a "USER $NB_USER" command at the end of the
 # file to ensure the image runs as a unprivileged user by default.
-USER $NB_USER
 
 RUN pip install elm_kernel && \
     python -m elm_kernel.install
 
-RUN curl -L -o elmreplkernel.zip https://github.com/eelcodijkstra/elmreplkernel/archive/refs/heads/master.zip && \
-    unzip elmreplkernel.zip
+RUN wget https://github.com/eelcodijkstra/elmreplkernel/archive/refs/heads/master.zip && \
+    unzip master.zip
 
 WORKDIR elmreplkernel-master
 
 RUN python setup.py install && \
     python -m elmrepl_kernel.install   
 
-WORKDIR $HOME
+# WORKDIR  /tmp/elm
 
 # clean up elmrepl-kernel install files
-RUN rm -R elmreplkernel-master elmreplkernel.zip
+# RUN rm -R elmreplkernel-master elmreplkernel.zip
+
+WORKDIR $HOME
+
+USER $NB_USER
