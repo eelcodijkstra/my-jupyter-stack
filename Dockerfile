@@ -7,7 +7,11 @@ FROM jupyter/base-notebook
 USER root
 
 RUN apt-get update && \
-    apt-get -y install curl zip
+    apt-get -y install curl \
+    zip
+
+# Install RISE, to present interactive slides
+RUN conda install -c conda-forge rise    
 
 WORKDIR /tmp/elm    
 
