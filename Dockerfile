@@ -35,8 +35,6 @@ WORKDIR elmreplkernel-master
 RUN python setup.py install && \
     python -m elmrepl_kernel.install   
 
-# WORKDIR  /tmp/elm
-
 # clean up elmrepl-kernel install files
 # RUN rm -R elmreplkernel-master elmreplkernel.zip
 
